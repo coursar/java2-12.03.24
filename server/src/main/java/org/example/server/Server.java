@@ -1,15 +1,15 @@
 package org.example.server;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
 import com.google.common.primitives.Bytes;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
@@ -69,9 +69,35 @@ public class Server {
                     //  \r\n
                     //  <bodyStartIndex>[Optional Body]
 
+                    // TODO:
+                    //  1. PoC (Proof of Concept) <-
+                    //  2. Architecture
                     int requestLineEndIndex = Bytes.indexOf(buffer, CRLF) + CRLF.length;
+
                     // HTTP/1.1 ISO-..., US_ASCII -> simplify UTF-8 (ASCII)
                     String requestLine = new String(buffer, 0, requestLineEndIndex, StandardCharsets.UTF_8);
+                    String[] requestLineParse = requestLine.split(" ", 3);
+                    String method = requestLineParse[0];
+                    String[] pathAndQuery = requestLineParse[1].split("\\?", 2);
+                    String path = URLDecoder.decode(pathAndQuery[0], StandardCharsets.UTF_8);
+
+                    ListMultimap<String, String> queryMap = ArrayListMultimap.create();
+                    String query = "";
+                    // TODO: API:
+                    //  1. Old-school API: null
+                    //  -> 2. Convenient: empty value: String "", List.empty, ...
+                    //  3. Modern: Optional
+                    if (pathAndQuery.length > 1) {
+                        query = pathAndQuery[1];
+                    }
+
+                    String[] queryPartsArray = query.split("&");
+                    for (String queryPart : queryPartsArray) {
+                        String[] splitQueryPart = queryPart.split("=", 2);
+                        String queryKey = URLDecoder.decode(splitQueryPart[0], StandardCharsets.UTF_8);
+                        String queryValue = URLDecoder.decode(splitQueryPart[1], StandardCharsets.UTF_8);
+                        queryMap.put(queryKey, queryValue);
+                    }
 
                     int headersEndIndex = CRFLCRLFIndex + CRLF.length;
                     String headersString = new String(buffer, requestLineEndIndex, headersEndIndex - requestLineEndIndex, StandardCharsets.UTF_8);
@@ -127,8 +153,9 @@ public class Server {
                     }
 
                     Request request = Request.builder()
-                            // TODO: path
-                            // TODO: query
+                            .method(method)
+                            .path(path)
+                            .query(queryMap)
                             .headers(headersMap)
                             .body(body)
                             .build();

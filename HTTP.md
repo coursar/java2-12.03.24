@@ -47,6 +47,8 @@ Response
 * PUT: body (0+ bytes), Content-Length: x bytes
 * DELETE: body (0+ bytes), Content-Length: x bytes (WARNING!)
 
+Transfer-Encoding: chunked
+
 --- later ---
 * PATCH
 * OPTIONS

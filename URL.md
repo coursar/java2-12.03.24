@@ -18,3 +18,8 @@ Host: domain:port
 Optional:
 queryParts = query.split("&")
 queryPart.split("=", 2)
+
+https://www.eldorado.ru/search/catalog.php?q=iphone&strategy=advanced,zero_queries_predictor
+
+&, ?... -> Percent Encoding
+https://www.eldorado.ru/search/catalog.php?q=%D1%80%D1%83%D1%84%D0%BE%D0%BD&utf (browser lies)

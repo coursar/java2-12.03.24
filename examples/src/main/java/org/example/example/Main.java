@@ -12,7 +12,7 @@ public class Main {
                 (request, response) -> {
                     byte[] responseBody = "<h1>response</h1>".getBytes(StandardCharsets.UTF_8);
 
-                    // TODO: if you open -> you close it
+                    // TODO: if you open -> you close it -> libraries also follow
                     //  in your case we don't close out
                     OutputStream out = response.getOut();
                     out.write("HTTP/1.1 200 OK\r\n".getBytes(StandardCharsets.UTF_8));
