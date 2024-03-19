@@ -31,3 +31,32 @@ Response
 
 ---- \r\n ------
 3. Body - 8 byte
+
+# Classic HTTP Servers
+
+1. Tomcat
+2. Jetty <-
+3. Undertow <-
+
+## HTTP/1.1 in depth
+
+### Method
+
+* GET: no body (0 bytes), no Content-Length (Content-Length: 0)
+* POST: body (0+ bytes), Content-Length: x bytes
+* PUT: body (0+ bytes), Content-Length: x bytes
+* DELETE: body (0+ bytes), Content-Length: x bytes (WARNING!)
+
+--- later ---
+* PATCH
+* OPTIONS
+* HEAD
+* TRACE
+* ...
+* CUSTOM
+
+Limit size headers
+
+RQ LINE + HEADERS\r\n
+\r\n
+BODY

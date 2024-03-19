@@ -1,9 +1,7 @@
 package org.example.learning.stream;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class ByteArrayOutputStreamMain {
     public static void main(String[] args) {

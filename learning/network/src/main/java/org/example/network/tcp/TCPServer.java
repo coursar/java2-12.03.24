@@ -22,7 +22,7 @@ public class TCPServer {
                         OutputStream out = socket.getOutputStream();
                 ) { // socket (server side) <-> socket (client side)
                     out.write("response\n".getBytes(StandardCharsets.UTF_8));
-                // close socket -> close connection
+                    // close socket -> close connection
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -16,6 +16,7 @@
         <lombok.version>1.18.30</lombok.version>
         <slf4j-api.version>2.0.12</slf4j-api.version>
         <logback-classic.version>1.5.3</logback-classic.version>
+        <guava.version>33.1.0-jre</guava.version>
     </properties>
 
     <modules>
@@ -65,6 +66,13 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback-classic.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

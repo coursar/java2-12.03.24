@@ -30,7 +30,7 @@ public class HTTPServer {
                     out.write("\r\n".getBytes(StandardCharsets.UTF_8));
                     out.write(body);
 
-                // close socket -> close connection
+                    // close socket -> close connection
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

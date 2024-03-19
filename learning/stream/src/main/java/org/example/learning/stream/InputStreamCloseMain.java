@@ -9,7 +9,7 @@ public class InputStreamCloseMain {
 
         FileInputStream in = null;
         try {
-             in = new FileInputStream("pom.xml");
+            in = new FileInputStream("pom.xml");
 
             byte[] buffer = new byte[4096];
             int read;
