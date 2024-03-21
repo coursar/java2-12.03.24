@@ -13,6 +13,8 @@
         <module>network</module>
         <module>jetty</module>
         <module>undertow</module>
+        <module>regex</module>
+        <module>serialization</module>
     </modules>
 
     <properties>

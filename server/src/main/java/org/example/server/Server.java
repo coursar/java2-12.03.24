@@ -89,14 +89,14 @@ public class Server {
                     //  3. Modern: Optional
                     if (pathAndQuery.length > 1) {
                         query = pathAndQuery[1];
-                    }
 
-                    String[] queryPartsArray = query.split("&");
-                    for (String queryPart : queryPartsArray) {
-                        String[] splitQueryPart = queryPart.split("=", 2);
-                        String queryKey = URLDecoder.decode(splitQueryPart[0], StandardCharsets.UTF_8);
-                        String queryValue = URLDecoder.decode(splitQueryPart[1], StandardCharsets.UTF_8);
-                        queryMap.put(queryKey, queryValue);
+                        String[] queryPartsArray = query.split("&");
+                        for (String queryPart : queryPartsArray) {
+                            String[] splitQueryPart = queryPart.split("=", 2);
+                            String queryKey = URLDecoder.decode(splitQueryPart[0], StandardCharsets.UTF_8);
+                            String queryValue = URLDecoder.decode(splitQueryPart[1], StandardCharsets.UTF_8);
+                            queryMap.put(queryKey, queryValue);
+                        }
                     }
 
                     int headersEndIndex = CRFLCRLFIndex + CRLF.length;
