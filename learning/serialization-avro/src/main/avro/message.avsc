@@ -1,0 +1,9 @@
+{
+    "namespace": "org.example.learning.avro.model",
+    "name": "Message",
+    "type": "record",
+    "fields": [
+        {"name": "id", "type": "long"},
+        {"name": "value", "type": ["string", "null"]}
+    ]
+}

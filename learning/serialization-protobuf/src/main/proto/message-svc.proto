@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.example.learning.protobuf.grpc";
+
+service MessageService {
+    rpc Rpc (Message) returns (Message);
+}
+
+message Message {
+    int64 id = 1;
+    string content = 2;
+}

@@ -1,5 +1,8 @@
-package org.example.learning.serialization.json.model;
+package org.example.learning.serialization.xml.model;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Message {
     private long id;
     private String value;

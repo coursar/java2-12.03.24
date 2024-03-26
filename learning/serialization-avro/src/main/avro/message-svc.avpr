@@ -1,0 +1,21 @@
+{
+    "namespace": "org.example.learning.avro.protocol",
+    "protocol": "MessageProtocol",
+
+    "types": [{
+        "namespace": "org.example.learning.avro.protocol.model",
+        "name": "Message",
+        "type": "record",
+        "fields": [
+            {"name": "id", "type": "long"},
+            {"name": "value", "type": ["string", "null"]}
+        ]
+    }],
+
+    "messages": {
+        "rpc": {
+            "request": [{"name": "req", "type": "org.example.learning.avro.protocol.model.Message"}],
+            "response": "org.example.learning.avro.protocol.model.Message"
+        }
+    }
+}
