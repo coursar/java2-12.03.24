@@ -1,3 +1,5 @@
+# IN PRODUCTION IGNORE private keys & keystores: certs/
+ssl-key.log
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

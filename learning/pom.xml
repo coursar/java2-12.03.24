@@ -15,6 +15,10 @@
         <module>undertow</module>
         <module>regex</module>
         <module>serialization</module>
+        <module>serialization-avro</module>
+        <module>serialization-protobuf</module>
+        <module>crypto</module>
+        <module>mapping</module>
     </modules>
 
     <properties>

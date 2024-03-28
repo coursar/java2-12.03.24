@@ -5,6 +5,7 @@ import com.google.common.primitives.Bytes;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import javax.net.ServerSocketFactory;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -21,10 +22,22 @@ public class Server {
     private final String host;
     // TODO: check port in constructor
     private final int port;
+    private final ServerSocketFactoryCreator serverSocketFactoryCreator;
+    private final ServerSocketCustomizer serverSocketCustomizer;
     private final Handler handler;
 
+    public Server(String host, int port, Handler handler) {
+        this.host = host;
+        this.port = port;
+        this.serverSocketFactoryCreator = ServerSocketFactoryCreator::getDefault;
+        this.serverSocketCustomizer = ServerSocketCustomizer.noOps();
+        this.handler = handler;
+    }
+
     public void start() throws Exception {
-        try (ServerSocket serverSocket = new ServerSocket()) { // bind
+        ServerSocketFactory serverSocketFactory = this.serverSocketFactoryCreator.getServerSocketFactory();
+        try (ServerSocket serverSocket = serverSocketFactory.createServerSocket()) { // bind
+            this.serverSocketCustomizer.customize(serverSocket);
             serverSocket.bind(new InetSocketAddress(this.host, this.port));
             while (true) {
                 try (
@@ -153,6 +166,7 @@ public class Server {
                     }
 
                     Request request = Request.builder()
+                            .socket(socket)
                             .method(method)
                             .path(path)
                             .query(queryMap)

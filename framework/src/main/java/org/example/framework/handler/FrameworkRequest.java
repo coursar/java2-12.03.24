@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import lombok.RequiredArgsConstructor;
 import org.example.server.Request;
 
+import java.net.Socket;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,6 +15,10 @@ public class FrameworkRequest {
     private final Request request; // copy from request all methods
     // IDEA -> alt + insert -> delegate methods
     private final Map<String, String> pathParams;
+
+    public Socket getSocket() {
+        return request.getSocket();
+    }
 
     public String getMethod() {
         return this.request.getMethod();
@@ -45,5 +50,9 @@ public class FrameworkRequest {
         //  ~: default value ""
         //  -> new api: Optional
         return Optional.ofNullable(this.pathParams.get(name));
+    }
+
+    public Map<String, Object> getAttributes() {
+        return this.request.getAttributes();
     }
 }

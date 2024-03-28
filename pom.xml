@@ -17,9 +17,12 @@
         <slf4j-api.version>2.0.12</slf4j-api.version>
         <logback-classic.version>1.5.3</logback-classic.version>
         <guava.version>33.1.0-jre</guava.version>
+        <jackson-databind.version>2.17.0</jackson-databind.version>
+        <modelmapper.version>3.2.0</modelmapper.version>
     </properties>
 
     <modules>
+        <module>learning</module>
         <module>security</module>
         <module>server</module>
         <module>examples</module>
@@ -80,6 +83,19 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${modelmapper.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
