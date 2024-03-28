@@ -1,15 +1,13 @@
 package org.example.example.https.service;
 
+import com.google.common.primitives.Ints;
 import org.example.example.https.exception.ItemNotFoundException;
 import org.example.example.https.exception.OperationNotPermittedException;
 import org.example.example.https.model.Item;
 
 import java.security.Principal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 // TODO:
 //  1. getAll - everybody
@@ -31,16 +29,15 @@ public class CrudService {
         this.nextId = nextId;
     }
 
-    public List<Item> getAll(int limit, int offset) {
-        // TODO: handle limits
-        int effectiveFrom = Math.min(offset, this.items.size() - 1);
-        int effectivePageSize = Math.min(limit, MAX_LIMIT);
-        int effectiveTo = Math.min(this.items.size() - effectiveFrom, effectiveFrom + effectivePageSize);
-        List<Item> page = this.items.subList(effectiveFrom, effectiveTo);
-        return page;
+    public List<Item> getAll(Optional<Principal> optPrincipal, int limit, int offset) {
+        int effectiveOffset = Ints.min(offset, items.size() - 1); // TODO: add offset validation
+        int effectiveLimit = Ints.min(limit, MAX_LIMIT, items.size() - effectiveOffset);
+
+        List<Item> responseModel = this.items.subList(effectiveOffset, effectiveOffset + effectiveLimit);
+        return responseModel;
     }
 
-    public Item getById(long id) throws ItemNotFoundException {
+    public Item getById(Optional<Principal> optPrincipal, long id) throws ItemNotFoundException {
         for (Item item : this.items) {
             if (item.getId() == id) {
                 return item;
@@ -50,36 +47,50 @@ public class CrudService {
         throw new ItemNotFoundException("item with id " + id + " not found");
     }
 
-    public Item save(Optional<Principal> optionalPrincipal, Item itemSaveModel) throws ItemNotFoundException, OperationNotPermittedException {
-        Principal principal = optionalPrincipal.orElseThrow(() -> new OperationNotPermittedException("not permitted"));
+    public Item save(Optional<Principal> optPrincipal, Item requestModel) throws ItemNotFoundException, OperationNotPermittedException {
+        Principal principal = optPrincipal.orElseThrow(() -> new OperationNotPermittedException("not permitted"));
 
-        if (itemSaveModel.getId() == 0) {
-            itemSaveModel.setId(this.nextId++);
-            itemSaveModel.setOwner(principal.getName());
-            itemSaveModel.setCreated(Instant.now());
-            this.items.add(itemSaveModel);
+        if (requestModel.getId() == 0) {
+            requestModel.setId(this.nextId++);
+            requestModel.setOwner(principal.getName());
+            requestModel.setCreated(Instant.now());
+            this.items.add(requestModel);
 
-            return itemSaveModel;
+            return requestModel;
         }
 
         for (Item item : this.items) {
-            if (item.getId() == itemSaveModel.getId()) {
-                if (!Objects.equals(item.getOwner(), principal.getName())) {
-                    throw new OperationNotPermittedException("...");
-                }
-                item.setValue(itemSaveModel.getValue());
-                return item;
+            if (item.getId() != requestModel.getId()) {
+                continue;
             }
+
+            if (!Objects.equals(item.getOwner(), principal.getName())) {
+                throw new OperationNotPermittedException("...");
+            }
+            item.setValue(requestModel.getValue());
+            return item;
         }
 
-        throw new ItemNotFoundException("item with id " + itemSaveModel.getId() + " not found");
+        throw new ItemNotFoundException("item with id " + requestModel.getId() + " not found");
     }
 
-    public void deleteById(long id) throws ItemNotFoundException {
-        boolean removed = this.items.removeIf(o -> o.getId() == id);
+    public void deleteById(Optional<Principal> optPrincipal, long id) throws ItemNotFoundException, OperationNotPermittedException {
+        Principal principal = optPrincipal.orElseThrow(() -> new OperationNotPermittedException("not permitted"));
 
-        if (!removed) {
-            throw new ItemNotFoundException("item with id " + id + " not found");
+        Iterator<Item> iterator = this.items.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (item.getId() != id) {
+                continue;
+            }
+
+            if (!Objects.equals(item.getOwner(), principal.getName())) {
+                throw new OperationNotPermittedException("...");
+            }
+            iterator.remove();
+            return;
         }
+
+        throw new ItemNotFoundException("item with id " + id + " not found");
     }
 }

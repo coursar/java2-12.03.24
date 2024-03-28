@@ -29,7 +29,7 @@ public class Server {
     public Server(String host, int port, Handler handler) {
         this.host = host;
         this.port = port;
-        this.serverSocketFactoryCreator = ServerSocketFactoryCreator::getDefault;
+        this.serverSocketFactoryCreator = ServerSocketFactoryCreator.getDefault();
         this.serverSocketCustomizer = ServerSocketCustomizer.noOps();
         this.handler = handler;
     }

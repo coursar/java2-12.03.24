@@ -31,7 +31,8 @@ public class Main {
         List<Item> items = new ArrayList<>();
 
         long nextId = 1;
-        items.add(new Item(nextId++, "value", "", Instant.now()));
+        items.add(new Item(nextId++, "value", "CN=user,OU=Dev,O=Organization,L=Moscow,C=RU", Instant.now()));
+        items.add(new Item(nextId++, "value", "CN=user,OU=Dev,O=Organization,L=Moscow,C=RU", Instant.now()));
         CrudService crudService = new CrudService(items, nextId);
 
         CrudApi crudApi = new CrudApi(crudService, jsonMapper, modelMapper);
@@ -43,6 +44,9 @@ public class Main {
                 ),
                 Method.POST, Map.of(
                         "/api/items", crudApi::save
+                ),
+                Method.DELETE, Map.of(
+                        "/api/items/{id}", crudApi::deleteById
                 )
         );
 
